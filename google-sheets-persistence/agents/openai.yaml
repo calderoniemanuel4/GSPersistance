@@ -1,0 +1,4 @@
+interface:
+  display_name: "Google Sheets Store"
+  short_description: "Persistencia en Google Sheets con Python"
+  default_prompt: "Usa $google-sheets-persistence para conectar Google Sheets como persistencia de datos del agente con Python."
