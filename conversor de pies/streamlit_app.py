@@ -1,3 +1,5 @@
+"""Aplicacion Streamlit para convertir entre pies y metros."""
+
 import math
 
 import streamlit as st
@@ -7,6 +9,7 @@ FEET_TO_METERS = 0.3048
 
 
 def convert_value(value: float, unit: str) -> tuple[float, str]:
+    """Convierte un valor numerico desde la unidad de origen a su unidad opuesta."""
     if unit == "Pies":
         return value * FEET_TO_METERS, "metros"
     return value / FEET_TO_METERS, "pies"
