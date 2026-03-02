@@ -14,4 +14,3 @@
     -Implementar esta app en una pagina web y subirla a cloud run.
     -Continuar con los tutoriales de codex
     -Consultar a chatGPT para tips de uso de codex
-    -implentar .gitignore
