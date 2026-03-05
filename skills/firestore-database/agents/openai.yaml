@@ -1,0 +1,4 @@
+interface:
+  display_name: "Firestore Database"
+  short_description: "Crear y sembrar Firestore con Python"
+  default_prompt: "Usa $firestore-database para habilitar, configurar y dejar lista una base de datos en Firestore."

@@ -6,7 +6,8 @@
     -vamos a trabajar con streamlit (MVP) similar tkinter que recomendo ChatGPT
     -bash: streamlit run streamlit_app.py
     -VSCode como editor 
-    -CODEX lleva control de diff + - sobre todo el proyecto. Cuyando Hacemos commit las diff desaparecen
+    -CODEX lleva control de diff + - sobre todo el proyecto. Cuyando Hacemos commit las diff desaparecen. Podemos hacer commit and push desde el panel superior.
+    -Los threads son multiagentes en paralelo que trabajan en un environment(se debe seleccionar el proyecto)
 
 ## Proyectos y avances 
     -Se implemento una app que convierte pies a metros: Nice!😎
