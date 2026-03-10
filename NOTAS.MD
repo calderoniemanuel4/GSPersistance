@@ -1,7 +1,6 @@
 ## TODO
     -Implementar esta app en una pagina web y subirla a cloud run.
     -MCP firebase por ahora. Se le debe dar permisos para usar el servicio
-    -AUTOMATIONS
 
 ## Anotaciones Codex
     -Conectamos el workspace con nuestro repo en github:
@@ -16,6 +15,12 @@
     -automatization: programar skills, cronjobs
     -creamos un AGENTS.MD  generado por IA para q CODEX recuerde la forma de desarrollar nuestros proyectos entre sesiones 
     -Vimos un prompt donde se pide crear un simple HTML para volcar los resultados del proyecto, que tenga buen diseño y explique los conceptos. Posteriormente en otro prompt se agrego botones(Descargar resultados, ver mas ejemplos, ver en google sheets)
+    -AUTOMATIONS.
+        #Implementa tareas programadas.
+        #Puede ser ejecutar una automatizacion disponible o crear una nueva.
+        #Para crear una nueva debe escribirse un prompt. Puede incluir skills.
+        # Cada vez que se ejecuta una automatizacion abre un hilo/thread donde queda el historial de la ejecucion.
+        #Ejemplos: Tareas de limpieza en el entorno, actualizar AGENTS.md, ejecutar un script.
 
 ## Proyectos y avances 
     -Se implemento una app que convierte pies a metros: Nice!😎
