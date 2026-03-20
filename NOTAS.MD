@@ -1,6 +1,7 @@
 ## TODO
     -Implementar esta app en una pagina web y subirla a cloud run.
     -MCP firebase por ahora. Se le debe dar permisos para usar el servicio
+    -pedir a Codex bajar un repo de una app o scrip , analizarlo, mejorarlo e instalarlo local.
 
 ## Anotaciones Codex
     -Conectamos el workspace con nuestro repo en github:
@@ -11,16 +12,24 @@
     -bash: streamlit run streamlit_app.py
     -VSCode como editor 
     -CODEX lleva control de diff + - sobre todo el proyecto. Cuyando Hacemos commit las diff desaparecen. Podemos hacer commit and push desde el panel superior. Desde la vista diff se puede abrir el arbol de archivos.
-    -Los threads son multiagentes en paralelo que trabajan en un environment(se debe seleccionar el proyecto)
-    -automatization: programar skills, cronjobs
+    -THREADS:
+         son ramas en donde podemos lanzar una tarea sobre un environment o proyecto comun. Es decir podemos lanzar  multiagentes en paralelo que trabajan en un environment(se debe seleccionar el proyecto). Ejemplo: Agente diseño, agente seguridad, agente autenticacion, agente base de datos, etc.
     -creamos un AGENTS.MD  generado por IA para q CODEX recuerde la forma de desarrollar nuestros proyectos entre sesiones 
     -Vimos un prompt donde se pide crear un simple HTML para volcar los resultados del proyecto, que tenga buen diseño y explique los conceptos. Posteriormente en otro prompt se agrego botones(Descargar resultados, ver mas ejemplos, ver en google sheets)
-    -AUTOMATIONS.
+    -AUTOMATIONS:
         #Implementa tareas programadas.
         #Puede ser ejecutar una automatizacion disponible o crear una nueva.
         #Para crear una nueva debe escribirse un prompt. Puede incluir skills.
         # Cada vez que se ejecuta una automatizacion abre un hilo/thread donde queda el historial de la ejecucion.
         #Ejemplos: Tareas de limpieza en el entorno, actualizar AGENTS.md, ejecutar un script.
+    -CONTEXTO:
+        AGENTS.md en la raíz: reglas globales del proyecto.
+        README.md por cada app/módulo: qué hace, cómo correrlo y límites.
+        docs/decisions.md o ARCHITECTURE.md: decisiones clave (por qué se hizo así).
+        tasks/ con tickets en markdown: objetivo, alcance, criterios de aceptación.
+    -LENGUAJES:
+        Nuestros lenguajes seran: Python, bash, Json y en menor medida HTML,  Markdown.
+
 
 ## Proyectos y avances 
     -Se implemento una app que convierte pies a metros: Nice!😎
