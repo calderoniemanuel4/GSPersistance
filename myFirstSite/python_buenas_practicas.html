@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buenas Prácticas de Python</title>
+  <style>
+    :root {
+      --bg: #f3f6fb;
+      --surface: #ffffff;
+      --primary: #0f4c81;
+      --accent: #1f8f6b;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #dbe5f0;
+      --code-bg: #0b1f3a;
+      --code-text: #f8fbff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #e8f1ff 0%, var(--bg) 28%, var(--bg) 100%);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(980px, 92vw);
+      margin: 2rem auto 3rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.10);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(120deg, var(--primary), #2a77c7);
+      color: #fff;
+      padding: 2rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin-top: 0.7rem;
+      max-width: 70ch;
+      opacity: 0.95;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #f8fbff;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 1.1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-secondary { background: #e8eef8; color: #1e3a5f; }
+    .status { color: var(--muted); font-size: 0.9rem; }
+
+    main {
+      padding: 2rem;
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    section {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      background: #fff;
+      color: var(--text);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.16rem;
+      color: #0f3d69;
+    }
+
+    ul { margin: 0.5rem 0 0 1.1rem; }
+
+    code {
+      background: #eaf2fc;
+      color: #0b2d52;
+      padding: 0.12rem 0.35rem;
+      border-radius: 5px;
+      font-family: Consolas, "SFMono-Regular", Menlo, Monaco, monospace;
+      font-size: 0.92em;
+    }
+
+    pre {
+      margin: 0.8rem 0 0;
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 10px;
+      padding: 0.9rem;
+      overflow-x: auto;
+      font-size: 0.9rem;
+    }
+
+    pre code {
+      background: transparent;
+      color: var(--code-text);
+      padding: 0;
+    }
+
+    footer {
+      padding: 1rem 2rem 1.6rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .container { box-shadow: none; border: none; margin: 0; width: 100%; }
+      .toolbar { display: none; }
+      section { break-inside: avoid; }
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+</head>
+<body>
+  <article class="container" id="page-content">
+    <header>
+      <h1>Buenas Prácticas de Python Coding</h1>
+      <p class="subtitle">Guía didáctica para escribir código Python limpio, mantenible y profesional.</p>
+    </header>
+
+    <div class="toolbar">
+      <div>
+        <button class="btn btn-primary" id="downloadPdfBtn">Convertir a PDF y Descargar</button>
+        <button class="btn btn-secondary" id="printBtn">Imprimir</button>
+      </div>
+      <div class="status" id="statusText">Listo para exportar.</div>
+    </div>
+
+    <main>
+      <section>
+        <h2>1. Escribe código legible</h2>
+        <ul>
+          <li>Usa nombres claros: <code>total_price</code> es mejor que <code>tp</code>.</li>
+          <li>Evita funciones largas con muchas responsabilidades.</li>
+          <li>Prioriza claridad sobre trucos de una sola línea.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>2. Respeta PEP 8</h2>
+        <ul>
+          <li>Indentación de 4 espacios y estilo consistente.</li>
+          <li>Espacios correctos alrededor de operadores.</li>
+          <li>Organiza imports en bloques lógicos.</li>
+        </ul>
+        <pre><code>def calculate_total(items: list[float]) -> float:
+    return sum(items)</code></pre>
+      </section>
+
+      <section>
+        <h2>3. Usa type hints y docstrings</h2>
+        <ul>
+          <li>Agrega tipos para facilitar mantenimiento y validación.</li>
+          <li>Documenta funciones públicas con propósito, args y retorno.</li>
+        </ul>
+        <pre><code>def load_users(path: str) -> list[dict]:
+    """Load users from a JSON file."""
+    ...</code></pre>
+      </section>
+
+      <section>
+        <h2>4. Maneja errores de forma explícita</h2>
+        <ul>
+          <li>Captura excepciones específicas.</li>
+          <li>No silencies errores críticos.</li>
+          <li>Propaga contexto útil para debugging.</li>
+        </ul>
+        <pre><code>try:
+    data = json.loads(payload)
+except json.JSONDecodeError as exc:
+    raise ValueError("Payload inválido") from exc</code></pre>
+      </section>
+
+      <section>
+        <h2>5. Separa capas del proyecto</h2>
+        <ul>
+          <li>Modelo de datos separado de servicios.</li>
+          <li>Lógica de negocio separada de UI/API.</li>
+          <li>Configuración centralizada en un módulo.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>6. Testea lo crítico</h2>
+        <ul>
+          <li>Usa <code>pytest</code> para pruebas automatizadas.</li>
+          <li>Cubre parsing, validaciones y reglas de negocio.</li>
+          <li>Mantén tests rápidos y reproducibles.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>7. Seguridad y configuración</h2>
+        <ul>
+          <li>No hardcodees claves o tokens.</li>
+          <li>Usa variables de entorno y <code>.env.example</code>.</li>
+          <li>Protege secretos con <code>.gitignore</code>.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>Documento base para aprendizaje y referencia de buenas prácticas en Python.</footer>
+  </article>
+
+  <script>
+    const downloadBtn = document.getElementById("downloadPdfBtn");
+    const printBtn = document.getElementById("printBtn");
+    const statusText = document.getElementById("statusText");
+    const content = document.getElementById("page-content");
+
+    async function exportToPdf() {
+      const filename = "buenas_practicas_python.pdf";
+
+      if (typeof window.html2pdf === "undefined") {
+        statusText.textContent = "No cargó html2pdf. Se abrirá la impresión del navegador.";
+        window.print();
+        return;
+      }
+
+      statusText.textContent = "Generando PDF...";
+      downloadBtn.disabled = true;
+
+      try {
+        await window.html2pdf()
+          .set({
+            margin: [10, 10, 12, 10],
+            filename,
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+            pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+          })
+          .from(content)
+          .save();
+
+        statusText.textContent = `PDF descargado: ${filename}`;
+      } catch (error) {
+        console.error(error);
+        statusText.textContent = "Error al generar PDF. Usa el botón Imprimir.";
+      } finally {
+        downloadBtn.disabled = false;
+      }
+    }
+
+    downloadBtn.addEventListener("click", exportToPdf);
+    printBtn.addEventListener("click", () => window.print());
+  </script>
+</body>
+</html>
