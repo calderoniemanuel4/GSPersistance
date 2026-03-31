@@ -34,6 +34,7 @@
 ## Proyectos y avances 
     -Se implemento una app que convierte pies a metros: Nice!😎
     -instalamos un MCP con contex7 , esto se incorporo en agents.md para que los proyectos consulten la documentacion de las APIs y librerias que se utilicen. 
+    -Se creo promptlib para ejecutar en bash. Lista los promps guardados x ejemplo crear .gitignore 
 
 ## Como conversar con Codex
     Aquí tienes una mini chuleta práctica para usar conmigo en Codex:
