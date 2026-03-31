@@ -5,7 +5,7 @@
 
 ## Anotaciones Codex
     -Conectamos el workspace con nuestro repo en github:
-        *git add.
+        *git add .
         *git commit
         *git push origin master
     -vamos a trabajar con streamlit (MVP) similar tkinter que recomendo ChatGPT
@@ -33,6 +33,7 @@
 
 ## Proyectos y avances 
     -Se implemento una app que convierte pies a metros: Nice!😎
+    -instalamos un MCP con contex7 , esto se incorporo en agents.md para que los proyectos consulten la documentacion de las APIs y librerias que se utilicen. 
 
 ## Como conversar con Codex
     Aquí tienes una mini chuleta práctica para usar conmigo en Codex:

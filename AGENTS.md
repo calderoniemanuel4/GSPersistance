@@ -1,377 +1,643 @@
-# AGENTS.md
+# AGENTS.md — Zen AI Engineering Standard
 
-## Propósito
+## Purpose
 
-Este archivo define el marco de trabajo para Codex y otros agentes que colaboren en los proyectos de Emanuel. Debe servir como referencia persistente entre sesiones para mantener consistencia técnica, estilo de desarrollo, arquitectura y prioridades.
-
----
-
-## Contexto general del workspace
-
-* Lenguaje principal: **Python**.
-* Lenguajes secundarios posibles: **HTML**, y eventualmente JavaScript mínimo si el proyecto lo requiere.
-* Enfoque principal: **APIs, automatización, agentes, integraciones y dashboards**.
-* Plataformas cloud preferidas: **Google Cloud Run** y **Google Cloud Functions**.
-* Hojas de cálculo: **Google Sheets**.
-* Base de datos, autenticación y almacenamiento: **Firestore**.
-* Interfaz rápida y visual: **Streamlit**.
-* Pruebas rápidas y validaciones iniciales: **terminal de comandos**.
-* Integraciones frecuentes: **APIs REST, archivos JSON, servicios cloud, OpenAI, Google Cloud**.
+This file defines the engineering standard for AI agents, Codex, and coding assistants working on Emanuel's projects.
+It is meant to preserve consistency across sessions in architecture, coding style, reliability, observability, and delivery quality.
 
 ---
 
-## Filosofía de trabajo
+## Core Engineering Principles
 
-1. **Priorizar simplicidad y claridad**.
-2. **Evitar complejidad innecesaria** y no reinventar la rueda.
-3. **Proponer alternativas** cuando exista más de una solución razonable.
-4. **Documentar bien** el código y las decisiones.
-5. **Mantener contexto entre sesiones**: cada proyecto debe dejar clara su estructura, propósito, dependencias y próximos pasos.
-6. **Pensar como ingeniero de software profesional**, pero sin sobrediseñar.
-7. **Código limpio, legible y refactorizable**. Evitar spaghetti code.
+- Reliability over cleverness
+- Structure over improvisation
+- Documentation over guessing
+- Determinism over magic
+- Observability over opacity
+- Clarity over complexity
+- Simplicity before abstraction
 
----
+All agents should be:
 
-## Expectativas para Codex / Agentes
-
-Cuando Codex trabaje en un proyecto, debe:
-
-* Entender el objetivo antes de empezar a escribir código.
-* Proponer una arquitectura breve antes de implementar si el proyecto tiene mas de un modulo, varias capas o una decision tecnica no obvia.
-* Sugerir opciones si hay varias formas válidas de resolver algo.
-* Generar proyectos ordenados, con carpetas y archivos descriptivos.
-* Escribir código modular, reutilizable y orientado a objetos cuando tenga sentido.
-* Incluir **docstrings claros** en clases, funciones y módulos.
-* Seguir buenas prácticas de tipado, validación y manejo de errores.
-* Favorecer herramientas modernas y mantenibles.
-* Explicar brevemente decisiones importantes de diseño.
-
-### Regla de proporcionalidad
-
-La solucion debe ser proporcional al problema.
-
-* Si la tarea es pequena, preferir una implementacion simple, directa y facil de mantener.
-* Si es un prototipo o prueba rapida, evitar sobredisenar la estructura.
-* Si el proyecto va a crecer, modularizar desde temprano.
-* No forzar capas, clases o carpetas si no aportan claridad real.
+- Predictable
+- Observable
+- Refactorable
+- Replaceable
+- Testable
 
 ---
 
-## Stack preferido
+## Workspace Context
 
-### Python
-
-Priorizar:
-
-* `pydantic` para validación de datos y modelos.
-* `fastapi` para APIs.
-* `httpx` para llamadas HTTP.
-* `pytest` para tests.
-* `python-dotenv` para variables de entorno locales.
-* `google-cloud-firestore` para Firestore.
-* `gspread` y `google-auth` para Google Sheets cuando aplique.
-* `streamlit` para interfaces rápidas.
-* `uvicorn` para correr APIs locales.
-* `rich` o `typer` para CLIs agradables cuando sea útil.
-
-### Cloud / Infraestructura
-
-* Despliegues en **Google Cloud Run** o **Google Cloud Functions** según el caso.
-* Firestore como base de datos principal.
-* Google Sheets como apoyo operativo, reporting o prototipos rápidos.
-* Uso de variables de entorno y secretos en vez de credenciales hardcodeadas.
+Primary language: Python  
+Secondary languages: HTML and minimal JavaScript when strictly necessary  
+Main focus: APIs, automation, AI agents, integrations, dashboards  
+Preferred cloud: Google Cloud Run and Google Cloud Functions  
+Operational data layer: Google Sheets  
+Persistence layer: Firestore  
+Fast UI: Streamlit  
+Quick validation workflow: terminal first  
+Frequent integrations: OpenAI, Google Cloud, REST APIs, JSON, Sheets, Firestore
 
 ---
 
-## Convenciones de arquitectura
+## Philosophy of Development
 
-### Regla general
+1. Prioritize clarity and simplicity.
+2. Avoid unnecessary complexity.
+3. Propose alternatives when more than one solution is valid.
+4. Document code and technical decisions.
+5. Preserve context between sessions.
+6. Think like a professional software engineer without overengineering.
+7. Keep code clean, modular, and refactorable.
 
-Cada proyecto debe arrancar con una estructura ordenada. Como base, preferir algo similar a:
+### Proportionality Rule
+
+Solutions must be proportional to the problem.
+
+- Small task → simple implementation
+- Prototype → avoid unnecessary architecture
+- Growing project → modularize early
+- Production system → optimize for reliability and maintainability
+
+---
+
+## Project Maturity Levels
+
+### Prototype
+Goal: validate an idea quickly.
+
+Rules:
+- minimal structure
+- fast feedback
+- manual validation is acceptable
+- avoid unnecessary abstractions
+
+### MVP
+Goal: stabilize a useful version.
+
+Rules:
+- modular structure
+- separated configuration
+- basic tests
+- logging required
+- `.env.example` required
+
+### Production
+Goal: reliability and maintainability.
+
+Rules:
+- clean architecture
+- structured logging
+- retries and fallbacks
+- tests for critical paths
+- observability
+- documented deployment
+- secrets management
+
+---
+
+## AI Agent Architecture
+
+Recommended structure:
 
 ```text
 project_name/
 ├── app/
 │   ├── api/
-│   ├── services/
-│   ├── models/
 │   ├── core/
-│   └── utils/
-├── tests/
-├── scripts/
-├── docs/
-├── .env.example
-├── requirements.txt
-├── README.md
-└── main.py
-```
-
-Estas estructuras son guias para proyectos medianos o con vocacion de crecer. En proyectos pequenos, se puede usar una version mas simple mientras el codigo siga siendo claro.
-
-### Si el proyecto usa FastAPI
-
-Preferir:
-
-```text
-project_name/
-├── app/
-│   ├── api/
-│   │   └── routes/
-│   ├── core/
-│   │   ├── config.py
-│   │   └── logging.py
-│   ├── models/
-│   ├── schemas/
+│   ├── agents/
+│   │   ├── core/
+│   │   ├── memory/
+│   │   ├── tools/
+│   │   ├── prompts/
+│   │   ├── schemas/
+│   │   ├── workflows/
+│   │   └── orchestration/
 │   ├── services/
 │   ├── repositories/
+│   ├── models/
+│   ├── utils/
 │   └── main.py
 ├── tests/
 ├── scripts/
+├── docs/
+├── logs/
+├── .env.example
 ├── requirements.txt
 ├── README.md
-└── .env.example
+└── AGENTS.md
 ```
 
-### Si el proyecto usa Streamlit
+Agents must be designed as systems, not scripts.
 
-Preferir:
+---
+
+## Canonical Agent Components
+
+Each serious agent should separate the following responsibilities.
+
+### 1. AgentCore
+Responsible for:
+- receiving user or task input
+- invoking planner or decision layer
+- coordinating tools and memory
+- returning final structured result
+
+### 2. Planner
+Responsible for:
+- deciding next action
+- decomposing tasks
+- selecting tools
+- determining whether more context is needed
+
+### 3. ToolExecutor
+Responsible for:
+- executing tools safely
+- validating arguments
+- handling errors
+- returning structured results
+
+### 4. MemoryManager
+Responsible for:
+- conversation context
+- task state
+- persisted knowledge
+- retrieval strategy
+
+### 5. PromptManager
+Responsible for:
+- system instructions
+- prompt templates
+- format constraints
+- role-specific guidance
+
+---
+
+## Workflow Pattern
+
+Preferred orchestration flow:
 
 ```text
-project_name/
-├── app/
-│   ├── pages/
-│   ├── components/
-│   ├── services/
-│   ├── models/
-│   └── streamlit_app.py
-├── tests/
-├── scripts/
-├── data/
-├── requirements.txt
-├── README.md
-└── .env.example
+Input
+→ Validation
+→ Planner
+→ Tool Selection
+→ Tool Execution
+→ Memory Update
+→ Final Response Validation
+→ Output
 ```
 
-### Estructura minima permitida
-
-Si el proyecto es pequeno o exploratorio, esta estructura tambien es valida:
+For complex tasks:
 
 ```text
-project_name/
-├── streamlit_app.py
-├── requirements.txt
-├── README.md
-└── .env.example
+Input
+→ Planner
+→ Multi-step execution
+→ Intermediate state saves
+→ Reflection / verification
+→ Final output
 ```
 
 ---
 
-## Estilo de código
+## Tool Design Rules
 
-* Usar nombres de archivos, clases y funciones descriptivos.
-* Mantener funciones pequeñas y enfocadas.
-* No mezclar lógica de negocio con lógica de presentación.
-* Evitar archivos gigantes con demasiadas responsabilidades.
-* Usar clases cuando aporten organización real.
-* Usar tipado estático en funciones y métodos.
-* Centralizar configuración en un módulo de settings.
-* Separar claramente:
+Tools must:
 
-  * modelos
-  * servicios
-  * repositorios
-  * rutas
-  * utilidades
+- Be deterministic whenever possible
+- Return structured data
+- Validate inputs
+- Fail gracefully
+- Be idempotent when appropriate
+- Avoid hidden side effects
+- Log execution
+- Define clear timeouts
 
----
+Never return vague free text when a schema is possible.
 
-## Docstrings y documentación
-
-Todo módulo importante debe incluir:
-
-* propósito del archivo
-* cómo se usa
-* dependencias relevantes
-
-Toda clase o función pública debe incluir docstring. Preferir estilo claro tipo:
+Prefer:
 
 ```python
-def load_messages(sheet_id: str) -> list[dict]:
-    """Load messages from a Google Sheet.
+from pydantic import BaseModel
 
-    Args:
-        sheet_id: Google Sheet identifier.
-
-    Returns:
-        A list of message dictionaries.
-    """
+class WeatherResult(BaseModel):
+    temperature: float
+    condition: str
 ```
 
-Además:
+Instead of:
 
-* cada proyecto debe tener un `README.md`
-* incluir pasos de instalación
-* variables de entorno requeridas
-* comandos de ejecución local
-* comandos de deploy si aplica
+```python
+return "It is hot today"
+```
 
----
+### Tool Categories
 
-## Manejo de configuración
+Preferred tool categories:
+- retrieval tools
+- API tools
+- computation tools
+- storage tools
+- reporting tools
+- notification tools
 
-* Nunca hardcodear claves o secretos.
-* Usar `.env` para desarrollo local.
-* Generar siempre `.env.example`.
-* Preferir clases de configuración con `pydantic` o configuración centralizada.
+### Tool Registry Pattern
 
----
+Use a registry when projects grow:
 
-## Calidad y testing
+```python
+TOOLS = {
+    "get_weather": get_weather,
+    "save_report": save_report,
+    "load_sheet_data": load_sheet_data,
+}
+```
 
-* Incluir tests básicos en todo proyecto que crezca más allá de una prueba rápida.
-* Cubrir al menos:
-
-  * parsing de datos
-  * servicios principales
-  * validaciones
-  * rutas críticas si hay API
-* Si no se escriben tests completos, dejar al menos una sección `TODO` con recomendaciones claras.
-* Para utilidades pequenas o demos, al menos validar ejecucion local y documentar como probarlo manualmente.
-
----
-
-## Convenciones del workspace
-
-* Usar `requirements.txt` en proyectos pequenos o prototipos. Si el proyecto crece bastante, se puede migrar a `pyproject.toml`.
-* Preferir `pytest` como framework de testing por defecto.
-* Agregar `.gitignore` en la raiz del workspace o del proyecto segun corresponda.
-* Nunca versionar secretos, credenciales, archivos `.env`, certificados o claves privadas.
-* Incluir `README.md` con instalacion, ejecucion y notas operativas minimas.
-* Incluir `.env.example` cuando el proyecto use configuracion por variables de entorno.
-* Si hay varias miniapps dentro del mismo workspace, cada una debe vivir en su propia carpeta con sus archivos principales.
-* Evitar mezclar codigo experimental con codigo estable sin separarlo por carpetas o documentarlo.
-
-### Archivos que normalmente no deben subirse
-
-* `__pycache__/`
-* `.pytest_cache/`
-* `.mypy_cache/`
-* `.ruff_cache/`
-* `.venv/`
-* `.env`
-* `.env.*`
-* `*.pem`
-* `*.key`
-* `credentials*.json`
-* `.DS_Store`
-
-### Comandos preferidos
-
-* Ejecutar tests con `pytest`.
-* Validar scripts simples con la terminal antes de proponer despliegue.
-* Ejecutar apps Streamlit con `streamlit run ...` o `python -m streamlit run ...`.
+This improves discoverability, testing, and orchestration.
 
 ---
 
-## Integraciones y persistencia
+## Structured Outputs Rule
 
-### Firestore
+When interacting with LLMs:
 
-Usar Firestore como opción principal para:
+- prefer structured outputs
+- prefer tool calling over parsing raw text
+- validate all outputs with Pydantic
+- avoid trusting free-form output in production flows
 
-* persistencia estructurada
-* configuración por usuario
-* logs de ejecución
-* historiales
-* autenticación y datos de app
-
-### Google Sheets
-
-Usar Google Sheets para:
-
-* reporting
-* dashboards rápidos
-* análisis operativo
-* prototipos
-* exportaciones o logs visibles para negocio
-
-### JSON
-
-Usar archivos JSON para:
-
-* mocks
-* configuración temporal
-* intercambio de datos simple
-* snapshots de pruebas
+If an output cannot be validated, treat it as failed execution.
 
 ---
 
-## Interfaces
+## OpenAI Usage Policy
 
-### Terminal
+Before generating or integrating OpenAI code:
 
-Primera opción para validar rápido:
+1. Prefer official SDK patterns
+2. Prefer structured outputs
+3. Prefer validated schemas
+4. Implement retries where needed
+5. Avoid deprecated methods
+6. Keep prompts concise and explicit
+7. Control token usage
 
-* scripts ejecutables
-* CLIs simples
-* pruebas de flujo
-* debugging inicial
+### OpenAI Safety Rules
 
-### Streamlit
+- Never execute raw model text as shell commands
+- Never trust arbitrary model-generated code without inspection
+- Never expose secrets in prompts or logs
+- Validate model-produced tool arguments before execution
 
-Usar para:
+### Preferred Libraries
 
-* dashboards
-* paneles operativos
-* interfaces de prueba
-* visualización rápida de datos
-
-### HTML
-
-Solo incorporarlo cuando haya una necesidad clara de UI web más personalizada.
-
----
-
-## Despliegue
-
-Antes de preparar deploy, Codex debe:
-
-1. verificar estructura del proyecto
-2. revisar dependencias
-3. validar variables de entorno necesarias
-4. proponer estrategia de despliegue adecuada:
-
-   * Cloud Functions para funciones pequeñas, webhooks o automatizaciones puntuales
-   * Cloud Run para APIs o servicios más completos
+- `openai`
+- `pydantic`
+- `httpx`
 
 ---
 
-## Forma de respuesta esperada de Codex
+## Context7 Policy
 
-Cuando trabaje sobre un proyecto, preferir este formato:
+Context7 must be used when:
 
-1. **Resumen breve del objetivo**
-2. **Propuesta de estructura o enfoque** si hace falta
-3. **Implementación**
-4. **Cómo correrlo**
-5. **Siguientes mejoras opcionales**
+- integrating external libraries
+- using unfamiliar APIs
+- writing production code
+- fixing version-specific issues
+- generating setup or deployment code
+- using libraries that evolve quickly
 
-Si hay más de una alternativa válida, mostrar:
+### Context7 Process
 
-* opción simple
-* opción robusta
+1. Identify library
+2. Query Context7
+3. Prefer official examples
+4. Prefer current syntax
+5. Avoid deprecated usage
+6. Apply only what fits project scope
+
+### Rule
+
+Documentation over assumptions.  
+Context7 over hallucination.
 
 ---
 
-## Regla final
+## Memory Architecture
 
-Construir como si el proyecto pudiera crecer:
+Agents must distinguish:
 
-* ordenado desde el día 1
-* fácil de entender en una semana
-* fácil de refactorizar en un mes
-* fácil de desplegar en producción si madura
+### Short-Term Memory
+Transient conversation context.
 
-Este workspace prioriza proyectos bien pensados, modulares, claros y profesionales.
+Examples:
+- recent messages
+- current user intent
+- immediate task context
 
-Sin embargo, claridad no significa complejidad. Si una solucion pequena resuelve bien el problema, esa debe ser la opcion preferida.
+### Working Memory
+Execution-specific state.
+
+Examples:
+- current step number
+- subtask state
+- partial tool outputs
+- plan status
+
+### Long-Term Memory
+Persisted knowledge across sessions.
+
+Examples:
+- user preferences
+- saved reports
+- historical results
+- task summaries
+- entity records
+
+### Memory Requirements
+
+Memory must be:
+- serializable
+- queryable
+- replaceable
+- documented
+- privacy-conscious
+
+Example mapping:
+
+```text
+short_term → in-memory conversation
+working_memory → runtime task state
+long_term → Firestore / DB / vector store
+```
+
+### Future-Ready Rule
+
+If memory may grow significantly, design it so it can later plug into:
+- Firestore
+- SQLite
+- vector store
+- search index
+
+without requiring full rewrite.
+
+---
+
+## Logging and Observability
+
+Agents must log:
+
+- high-level decisions
+- tool selections
+- tool inputs (sanitized)
+- tool outputs summary
+- retries
+- errors
+- fallbacks
+- external API calls
+- state transitions
+
+### Logging Rules
+
+- use `logging`, not `print`, in production code
+- prefer structured logs when project grows
+- never log secrets
+- keep logs useful for debugging real incidents
+
+### Minimum Logging Fields
+
+When possible, include:
+- timestamp
+- module
+- action
+- status
+- duration
+- correlation_id or request_id
+
+### Observability Requirements
+
+Production-oriented agents should expose:
+- health checks
+- basic metrics
+- latency visibility
+- error counts
+- optional telemetry hooks
+
+---
+
+## Error Handling Strategy
+
+Agents must handle:
+
+- malformed model output
+- invalid tool arguments
+- external API failures
+- timeouts
+- network errors
+- missing configuration
+- corrupted memory state
+
+### Preferred Recovery Strategies
+
+- retry
+- fallback tool
+- safer simplified prompt
+- partial result
+- safe defaults
+- user-facing clarification when needed
+
+Never fail silently.
+
+---
+
+## Clean Architecture Rules
+
+Use these layers when project scope justifies it:
+
+```text
+interface
+application
+domain
+infrastructure
+```
+
+### Mapping
+
+- API / Streamlit / CLI → interface
+- agents / services / use cases → application
+- models / business rules → domain
+- cloud / DB / external APIs → infrastructure
+
+### Rule of Separation
+
+Do not mix:
+- business logic with UI
+- persistence with orchestration
+- prompts with infrastructure
+- tools with transport layer concerns
+
+---
+
+## Configuration Rules
+
+- Never hardcode secrets
+- Use `.env` for local development
+- Always provide `.env.example`
+- Centralize settings in a config module
+- Prefer Pydantic settings or a dedicated config layer
+- Validate required environment variables at startup
+
+---
+
+## Coding Style Rules
+
+- descriptive names
+- small focused functions
+- explicit typing
+- modular code
+- docstrings for public classes and functions
+- avoid giant files
+- separate responsibilities clearly
+
+Prefer:
+- simple before abstract
+- explicit before clever
+- readable before compressed
+
+---
+
+## Testing Strategy
+
+Use `pytest` by default.
+
+At minimum, test:
+- parsing
+- schemas
+- core services
+- tool behavior
+- critical routes
+- memory serialization
+- failure cases
+
+### For AI-Specific Systems
+
+Test:
+- tool schema validation
+- prompt contract assumptions
+- planner behavior when a tool fails
+- fallback execution
+- structured output validation
+
+If full tests are not written, leave:
+- TODOs
+- manual test steps
+- validation notes in README
+
+---
+
+## Preferred Python Stack
+
+Use when appropriate:
+
+- `pydantic` for schemas and validation
+- `fastapi` for APIs
+- `httpx` for HTTP
+- `pytest` for tests
+- `python-dotenv` for local environment management
+- `google-cloud-firestore` for Firestore
+- `gspread` + `google-auth` for Sheets
+- `streamlit` for operational UI
+- `uvicorn` for local API run
+- `rich` or `typer` for polished CLI tools
+
+---
+
+## Deployment Guidance
+
+Before deployment, the agent must verify:
+
+1. project structure
+2. dependencies
+3. required environment variables
+4. logging readiness
+5. health check availability
+6. deployment target suitability
+
+### Deploy Target Guidance
+
+Use:
+- Cloud Functions for small isolated tasks, webhooks, or event handlers
+- Cloud Run for APIs, services, or long-running orchestration components
+
+---
+
+## Response Format Expected from Codex / Agents
+
+Preferred response structure:
+
+1. Brief objective summary
+2. Proposed structure or approach if needed
+3. Implementation
+4. How to run it
+5. Optional next improvements
+
+If there are valid alternatives, show:
+- simple option
+- robust option
+
+---
+
+## Files and Git Hygiene
+
+Do not commit:
+- `.env`
+- `.env.*`
+- `__pycache__/`
+- `.pytest_cache/`
+- `.mypy_cache/`
+- `.ruff_cache/`
+- `.venv/`
+- credentials files
+- private keys
+- generated local logs unless intentional
+
+Always include when relevant:
+- `README.md`
+- `.env.example`
+- `.gitignore`
+- `requirements.txt` or `pyproject.toml`
+
+---
+
+## Production Readiness Checklist
+
+Before calling an agent project production-ready, confirm:
+
+- [ ] Config is centralized
+- [ ] Secrets are externalized
+- [ ] Logs are meaningful
+- [ ] Core flows have tests
+- [ ] Tool outputs are validated
+- [ ] Errors have fallback behavior
+- [ ] README explains setup, run, and deploy
+- [ ] Deployment target is documented
+- [ ] Health check exists
+- [ ] Context7-sensitive libraries were checked against docs
+
+---
+
+## Golden Rule
+
+Build as if the project may grow:
+
+- organized from day 1
+- understandable in one week
+- refactorable in one month
+- deployable in production when mature
+
+But never confuse clarity with complexity.
+
+If a smaller solution solves the problem well, prefer the smaller solution.
