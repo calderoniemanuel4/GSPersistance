@@ -65,3 +65,60 @@ Cuando quieras reutilizar uno, puedes pedirme:
 - "usa `gitignore-python-github`"
 - "guardame este nuevo prompt en la biblioteca"
 - "actualiza la variante robusta de X"
+
+## Como llevar `promptlib` a otra Mac
+
+1. Copiar la skill completa a la nueva Mac en la misma ruta:
+
+```bash
+mkdir -p ~/.codex/skills
+cp -R ~/.codex/skills/prompt-library ~/.codex/skills/
+```
+
+2. Agregar la funcion `promptlib` en `~/.zshrc` de la nueva Mac:
+
+```bash
+promptlib() {
+  local file="$HOME/.codex/skills/prompt-library/references/prompts.md"
+  if [[ ! -f "$file" ]]; then
+    echo "No se encontro la biblioteca de prompts en: $file"
+    return 1
+  fi
+
+  if [[ -z "$1" ]]; then
+    if command -v rg >/dev/null 2>&1; then
+      rg '^## ' "$file" | sed 's/^## /- /'
+    else
+      grep '^## ' "$file" | sed 's/^## /- /'
+    fi
+    return
+  fi
+
+  awk -v name="$1" '
+    $0 ~ "^## "name"$" {show=1}
+    show && /^## / && $0 !~ "^## "name"$" {exit}
+    show {print}
+  ' "$file"
+}
+```
+
+3. Recargar configuracion:
+
+```bash
+source ~/.zshrc
+```
+
+4. Probar que funciona:
+
+```bash
+promptlib
+promptlib gitignore-python-github
+```
+
+5. (Opcional) Instalar `rg` para busqueda mas rapida:
+
+```bash
+brew install ripgrep
+```
+
+Si no instalas `rg`, no pasa nada: la funcion ya usa `grep` como respaldo.
